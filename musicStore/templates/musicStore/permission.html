@@ -1,0 +1,148 @@
+{% extends 'musicStore/base.html' %}
+{% block title %}Permission{% endblock %}
+{% block body %}
+{% load static %}
+  <div class="container" style="margin-top: 2%">
+  <div class="col-lg-12">
+  <div class="row bg-light">
+
+          <div class="col-lg-4 bg-light">
+              <form class="form-group" method="post" action="{% url 'musicStore:create_group' %}">
+              {% csrf_token %}
+                <div class="col-sm-6">
+                    <label ><strong>Group Name</strong></label>
+                    <input class="form-control" type="text" onkeyup="keyUp(event.keyCode)" onkeydown="return isAlpha(event.keyCode);"
+                    aria-label="Search" name="group_name" value="{{ group_name }}">
+                </div><br>
+                <div class="col-lg-6">
+                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" style="background-color: white">Create</button>
+                </div>
+              </form>
+
+          </div>
+           <div class="col-lg-3" style="margin-top: 2%">
+            {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible" role="alert" style="background-color: whitesmoke; box-shadow: 10px 10px 10px;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    <p style="color:red">{{ message }}</p>
+  </div>
+{% endfor %}
+           </div>
+      <div class="col-lg-2">
+      {% if group %}
+        <table class="table table-light table-hover" id="group-table" style="margin-top: 2%">
+             <thead id="thead">
+             <tr>
+             <th>Group Name</th>
+             </tr>
+             </thead>
+             <tbody id="thead">
+             {% for groups in group %}
+             <tr>
+                 <td>{{ groups.name }}</td>
+             </tr>
+             {% endfor %}
+             </tbody>
+         </table>
+      {% endif %}
+      </div>
+      <div class="col-lg-3">
+          <form class="form-group" method="post" action="{% url 'musicStore:delete_user' %}">
+{% csrf_token %}
+          <div class="col-sm-6">
+    <label>Delete User </label><br>
+
+    <select name="deleteuser" id="id_deleteuser" class="form-control">
+        {% for es in user %}
+            <option value="{{ es.id }}">{{ es.username }}</option>
+        {% endfor %}
+    </select><br>
+          </div>
+          <div class="col-sm-6">
+              {% for groups in group %}
+              <input type="radio" name="staff" value="{{ groups.name }}" style="margin-left: 10%">{{ groups.name }}
+
+            {% endfor %}
+          </div>
+          <div class="col-lg-6">
+        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" style="background-color: white">Delete</button>
+              </div>
+</form>
+      </div>
+
+      </div>
+  <div class="row btn-light" style="margin-top: 2%">
+      <div class="col-lg-4">
+          <form class="form-group" method="post" action="{% url 'musicStore:add_user' %}">
+{% csrf_token %}
+          <div class="col-sm-6">
+    <label>Select User </label><br>
+
+    <select name="users" id="id_songs" class="form-control">
+        {% for es in user %}
+            <option value="{{ es.id }}">{{ es.username }}</option>
+        {% endfor %}
+    </select><br>
+</div>
+          <div class="col-lg-6">
+        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" style="background-color: white">Create</button>
+              </div>
+</form>
+      </div>
+     <div class="col-lg-4">
+      {% if viewer %}
+        <table class="table table-light table-hover" id="group-table" style="margin-top: 2%">
+             <thead id="thead">
+             <tr>
+             <th>Users in Viewers</th>
+             </tr>
+             </thead>
+             <tbody id="thead">
+             {% for users in viewer %}
+             <tr>
+                 <td>{{ users.username }}</td>
+             </tr>
+             {% endfor %}
+             </tbody>
+         </table>
+      {% endif %}
+      </div>
+  <div class="col-lg-4">
+      {% if staff %}
+        <table class="table table-light table-hover" id="group-table" style="margin-top: 2%">
+             <thead id="thead">
+             <tr>
+             <th>Users in Staff</th>
+             </tr>
+             </thead>
+             <tbody id="thead">
+             {% for users in staff %}
+             <tr>
+                 <td>{{ users.username }}</td>
+             </tr>
+             {% endfor %}
+             </tbody>
+         </table>
+      {% endif %}
+      </div>
+  </div>
+  <div class="row btn-light" style="margin-top: 2%">
+     <div class="col-4">
+
+     </div>
+      <div class="col-lg-4">
+
+      </div>
+  </div>
+  </div>
+  </div>
+
+    <script type="text/javascript">
+        function isAlpha(keyCode)
+        {
+            return ((keyCode >= 65 && keyCode <= 90) || keyCode === 8 || keyCode === 32 ||keyCode === 190);
+        }
+    </script>
+{% endblock %}

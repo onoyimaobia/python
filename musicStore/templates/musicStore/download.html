@@ -1,0 +1,238 @@
+{% extends 'musicStore/base.html' %}
+{% block title %}Album Detail{% endblock %}
+{% block body %}
+{% load static %}
+    <style>
+    .audio-player {
+        background: white;
+        border: 1px solid #acacac;
+        width: 50vw;
+        text-align: center;
+        display: flex;
+        flex-flow: row;
+        margin: 4rem 0 4rem 0;
+    }
+  .album-image {
+    min-height: 100px;
+    width: 110px;
+      background-image: url("{% static 'image/apostle.fw.png'%}");
+    background-size: cover;
+  }
+    .player-controls {
+    align-items: center;
+    justify-content: center;
+    margin-top: 2.5rem;
+    flex: 3;}
+    progress {
+      width: 90%;
+    }
+     progress[value] {
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: white;
+      color: blue;
+      height: 5px;
+    }
+     progress[value]::-webkit-progress-bar {
+      background-color: white;
+      border-radius: 2px;
+      border: 1px solid #acacac;
+      color: blue;
+    }
+    progress::-webkit-progress-value {
+      background-color: green;
+    }
+     p {
+      font-size: 1.6rem;
+    }
+    #play-btn {
+    background-image: url('{% static 'image/playaudio.jpg' %}');
+    background-size: cover;
+        opacity: 0.7;
+    width: 75px;
+    height: 75px;
+        position: absolute;
+    top: 35%;
+    left: 50%;
+        bottom: 70%;
+        right: 50%;
+    transform: translate(-50%, -50%);
+    }
+      .audio-player #play-btn.pause {
+  background-image: url('{% static 'image/pause-button.png' %}');
+          z-index: 3;
+}
+    </style>
+
+    {% for songs in all_song %}
+        <div class="col-lg-12" style="margin-top: 2%">
+        <div class="row">
+            <div class="col-lg-6">
+            <div class="card">
+                {% for s in play %}
+             <h4 style="text-align:center; color: darkgrey">Video</h4>
+                <div class="embed-responsive embed-responsive-4by3">
+                     <video width='400' controls="controls" id="video">
+                    <source src='{{ s.videofile.url }}' type='video/mp4' class="img-fluid">
+                    Your browser does not support the video tag.
+                    </video>
+                </div>
+         {% endfor %}
+            </div>
+            </div>
+    {% endfor %}
+
+            <div class="col-lg-6">
+                <div class="card">
+
+               <!---<h2 style="text-align:center; color: darkgrey">Play and Download</h2>--->
+                <h4 style="text-align:center; color: darkgrey">Audio</h4>
+                <div class="card-body">
+
+
+            {% for songs in all_song %}
+                    <img src="{{ songs.song_logo }}" class="mx-auto d-block img-fluid"/>
+            {% endfor %}
+            {% for s in play %}
+                <audio width='400' controls="controls" id="audio" style="width: 100%">
+                    <source src='{{ s.audio.url }}' type='audio/mp3' class="img-fluid">
+                    Your browser does not support the audio tag.
+                    </audio>
+
+                {% endfor %}
+                <br>
+                {% for songs in all_song %}
+                    <h4></h4>
+                 <h4 style="color: darkgray; text-align: right"><strong style="color:darkslategray;text-align: right"> Featured Artist: </strong> {{songs.featured_artist }}</h4>
+
+
+                 {% endfor %}
+
+                </div>
+            </div>
+
+        </div>
+        </div>
+    <div class="row">
+    {% for s in play %}
+    <div class="audio-player">
+    <div class="col-lg-3">
+      {% for songs in all_song %}
+          <img src="{{ songs.song_logo }}" class="mx-auto d-block img-fluid" style="margin-top: 4%" />
+
+            <div id="play-btn"></div>
+          {% endfor %}
+    </div>
+    <div class="audio-wrapper" id="player-container" href="javascript:;">
+      <audio id="player" ontimeupdate="initProgressBar()">
+			 <source src='{{ s.audio.url }}' type='audio/mp3' class="img-fluid">
+			</audio>
+    </div>
+    <div class="player-controls scrubber">
+      <p>Oslo <small>by</small> Holy Esque</p>
+      <span id="seekObjContainer">
+			  <progress id="seekObj" value="0" max="1"></progress>
+			</span>
+      <br>
+      <small style="float: left; position: relative; left: 15px;" class="start-time"></small>
+      <small style="float: right; position: relative; right: 20px;" class="end-time"></small>
+
+    </div>
+    <div class="album-image"></div>
+  </div>
+    {% endfor %}
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    function calculateTotalValue(length) {
+  var minutes = Math.floor(length / 60),
+    seconds_int = length - minutes * 60,
+    seconds_str = seconds_int.toString(),
+    seconds = seconds_str.substr(0, 2),
+    time = minutes + ':' + seconds
+
+  return time;
+}
+
+function calculateCurrentValue(currentTime) {
+  var current_hour = parseInt(currentTime / 3600) % 24,
+    current_minute = parseInt(currentTime / 60) % 60,
+    current_seconds_long = currentTime % 60,
+    current_seconds = current_seconds_long.toFixed(),
+    current_time = (current_minute < 10 ? "0" + current_minute : current_minute) + ":" + (current_seconds < 10 ? "0" + current_seconds : current_seconds);
+
+  return current_time;
+}
+
+function initProgressBar() {
+  var player = document.getElementById('player');
+  var length = player.duration
+  var current_time = player.currentTime;
+
+  // calculate total length of value
+  var totalLength = calculateTotalValue(length)
+  jQuery(".end-time").html(totalLength);
+
+  // calculate current value time
+  var currentTime = calculateCurrentValue(current_time);
+  jQuery(".start-time").html(currentTime);
+
+  var progressbar = document.getElementById('seekObj');
+  progressbar.value = (player.currentTime / player.duration);
+  progressbar.addEventListener("click", seek);
+
+  if (player.currentTime == player.duration) {
+    $('#play-btn').removeClass('pause');
+  }
+
+  function seek(evt) {
+    var percent = evt.offsetX / this.offsetWidth;
+    player.currentTime = percent * player.duration;
+    progressbar.value = percent / 100;
+  }
+};
+
+function initPlayers(num) {
+  // pass num in if there are multiple audio players e.g 'player' + i
+
+  for (var i = 0; i < num; i++) {
+    (function() {
+
+      // Variables
+      // ----------------------------------------------------------
+      // audio embed object
+      var playerContainer = document.getElementById('player-container'),
+        player = document.getElementById('player'),
+        isPlaying = false,
+        playBtn = document.getElementById('play-btn');
+
+      // Controls Listeners
+      // ----------------------------------------------------------
+      if (playBtn != null) {
+        playBtn.addEventListener('click', function() {
+          togglePlay()
+        });
+      }
+
+      // Controls & Sounds Methods
+      // ----------------------------------------------------------
+      function togglePlay() {
+        if (player.paused === false) {
+          player.pause();
+          isPlaying = false;
+          $('#play-btn').removeClass('pause');
+
+        } else {
+          player.play();
+          $('#play-btn').addClass('pause');
+          isPlaying = true;
+        }
+      }
+    }());
+  }
+}
+
+initPlayers(jQuery('#player-container').length);
+    </script>
+{% endblock %}

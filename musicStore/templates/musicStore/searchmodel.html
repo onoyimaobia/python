@@ -1,0 +1,176 @@
+{% extends 'musicStore/base.html' %}
+{% block title %}Search Result{% endblock %}
+{% block body %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'datetimepicker/jquery.datetimepicker.min.css' %}">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" >
+<link rel="stylesheet" href="{% static 'Buttons-1.5.2/css/buttons.dataTables.min.css' %}" >
+
+<div class="container">
+<div class="row">
+    <marquee behavior="alternate">
+        <strong>{{ message }}</strong>
+        <strong>{{ time }}</strong>
+    </marquee>
+</div>
+    <div class="row">
+        <div class="col-lg-3 " style="margin-top: 10%">
+          <div class="card">
+              <div class="card-header" style="background-color: darkgray;color: white">
+                  <h5>Available Search</h5>
+              </div>
+              <div class="card-body search-card" style="background-color: gray">
+                  <div id="accordion">
+                      <div class="card" style="background-color: #DBDBEA">
+                        <div class="card-header" id="headingOne">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color: black">
+                                    Song Type
+                                </button>
+                             </h5>
+                        </div>
+                          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                              <div class="card-body">
+                                  <form class="form-inline my-2 my-lg-0 navbar-nav mr-auto" method="get" role="search" action="{% url 'musicStore:search_song_type' %}">
+                                    <input class="form-control mr-sm-2" style="color: black" type="search" placeholder="Search for Song Type" aria-label="Search" name="s" value="{{ request.GET.s }}" >
+                                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit" style="background-color: black;color: white;margin-top: 1%">Search</button>
+                                  </form>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="card"style="background-color: #DBDBEA">
+                        <div class="card-header" id="headingTwo">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="color: black">
+                                    Creation Date
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="card-body">
+                               <form class="form-inline my-2 my-lg-0 navbar-nav mr-auto" method="get" role="search" action="{% url 'musicStore:solo' %}">
+                                   <!--<div class="input-append date form_datetime" data-date="2012-12-21T15:25:00Z" id="datetime">
+                                        <input size="16" type="text" value="" >
+                                        <span class="add-on"><i class="icon-remove"></i></span>
+                                        <span class="add-on"><i class="icon-th"></i></span>
+                                    </div>-->
+                                   <div class="input-group date" data-date="2012-12-21T15:25:00Z" id="datetime">
+                            <input type="text" class="form-control" size="16" readonly value="" id="datetime">
+
+                            <span class="input-group-text"><i class="fas fa-trash-alt"></i></span>
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+
+                            </div>
+                                   <!--<div class="input-group date" data-date="2012-12-21T15:25:00Z">
+                                <input type="text" id="datetime" class="form-control">
+                                   <span class="input-group-text"><i class="fas fa-trash-alt"></i></span>
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                </div>--->
+                                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit" style="background-color: black;color: white;margin-top: 1%">Search</button>
+                                  </form>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="card" style="background-color: #DBDBEA">
+                        <div class="card-header" id="headingThree">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="color: black">
+                                    Genre
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                            <div class="card-body">
+                               <form class="form-inline my-2 my-lg-0 navbar-nav mr-auto" method="get" role="search" action="{% url 'musicStore:solo' %}">
+                                    <input class="form-control mr-sm-2" style="color: black" type="search" placeholder="Search for Song Type" aria-label="Search" name="a" value="{{ request.GET.a }}" >
+                                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit" style="background-color: black;color: white;margin-top: 1%">Search</button>
+                                  </form>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="card" style="background-color: #DBDBEA">
+                        <div class="card-header" id="headingFour">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"style="color: black">
+                                    Song Title
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                            <div class="card-body">
+                                <form class="form-inline my-2 my-lg-0 navbar-nav mr-auto" method="get" role="search" action="{% url 'musicStore:file_type' %}">
+                                    <input class="form-control mr-sm-2" style="color: black" type="search" placeholder="Search for Song Type" aria-label="Search" name="t" value="{{ request.GET.t }}" >
+                                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit" style="background-color: black;color: white;margin-top: 1%">Search</button>
+                                </form>
+                            </div>
+                        </div>
+  </div>
+
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div class="col-lg-9" style="box-shadow: 10px 10px 10px;">
+
+            {% if allalbums %}
+                <table  id="example" class="display" style="width:100%">
+                <thead>
+                <tr>
+                    <th>Artist</th>
+                    <th>Genre</th>
+                    <th>Creation Date</th>
+                    <th>Song Title</th>
+                    <th>Song Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for albums in allalbums  %}
+                    <tr>
+                    <td>{{ albums.album.artist }}</td>
+                    <td>{{ albums.album.genere }}</td>
+                    <td>{{ albums.album.creation_date }}</td>
+                    <td>{{ albums.song_title }}</td>
+                    <td>{{ albums.file_type }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script src="{% static 'datetimepicker/jquery.js' %}"></script>
+    <script src="{% static 'datetimepicker/jquery.datetimepicker.full.js'  %}"></script>
+    <script type="text/javascript">
+        $("#datetime").datetimepicker({
+             format: "dd MM yyyy - HH:ii P",
+            showMeridian: true,
+            autoclose: true,
+            todayBtn: true
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity=""></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'DataTables-1.10.18/js/jquery.dataTables.min.js' %}"  integrity="" ></script>
+    <script src="{% static 'DataTables-1.10.18/js/dataTables.bootstrap.min.js' %}" integrity="" ></script>
+    <script src="{% static 'DataTables-1.10.18/js/dataTables.bootstrap4.min.js' %}" integrity="" ></script>
+    <script src="{% static 'Buttons-1.5.2/js/dataTables.buttons.min.js' %}" integrity=""  ></script>
+    <script src="{% static 'Buttons-1.5.2/js/buttons.flash.min.js' %}" integrity=""  ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" integrity=""  ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js" integrity=""  ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js" integrity=""  ></script>
+    <script src="{% static 'Buttons-1.5.2/js/buttons.html5.min.js' %}" integrity="" ></script>
+   <script src="{% static 'Buttons-1.5.2/js/buttons.print.min.js' %}" integrity="" ></script>
+  <script type="text/javascript">
+      $(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            { extend:'copy', attr: { id: 'allan' } }, 'csv', 'excel', 'pdf', 'print'
+        ]
+
+    } );
+} );
+  </script>
+{% endblock %}
+

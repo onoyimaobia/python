@@ -1,1 +1,77 @@
-{{ album }}
+{% extends 'musicStore/base.html' %}
+{% block title %}Album Detail{% endblock %}
+{% block body %}
+{% load static %}
+    <div class="col-lg-12" style="margin-top: 2%">
+    <div class="row">
+    <div class="col-lg-6" style="box-shadow: 10px 10px 10px">
+        <div class="card">
+            <div class="card-img-top img-fluid">
+                <img src="{{ all_album.album_logo }}" class="mx-auto d-block" style="width:500px; margin-top: 2%"/>
+            </div>
+            <div class="card-body">
+            <h2 style="font-family:Castellar;font-size: 20px"> Main Artist: {{all_album.artist }}</h2>
+
+<!---<h2>{{ all_album.album_title }}</h2>
+<h2>{{ all_album.genere }}</h2>--->
+            </div>
+        </div>
+    </div>
+  <div class="col-lg-6">
+  <div class="card">
+{% if error_message %}
+<p><strong>{{ error_message }}</strong></p>
+{% endif %}
+<h3 style="margin-left: 10%;font-family:Castellar; font-size: 20px;margin-top: 2%">{{all_album.artist }}'s song list</h3>
+  <div class="card-body">
+    <table class="table table-light table-hover" align="center" id="first-table">
+        <thead>
+        <tr>
+            <th><h1>Songs</h1></th>
+            <th><h1>Released Date</h1></th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for song in all_album.song_set.all %}
+            <tr>
+            <td><h5>
+              <a href="{% url 'musicStore:download' song.id %}" >{{ song.song_title }}</a>
+            </h5></td>
+            <td><h5>{{ song.production_date }}</h5></td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
+
+   <h5 class="blink" style="color: #444444"> You can download / play it online by clicking on the Song</h5>
+  </div>
+
+  </div>
+</div>
+    <!----<form action="{% url 'musicStore:favourite' all_album.id %}" method="post">
+    {% csrf_token %}
+    {% for song in all_album.song_set.all %}
+       <input type="radio" id="song{{ forloop.counter }}" name="song" value="{{ song.id }}" style="margin-left: 10%">
+       <label for="song{{ forloop.counter }}">
+       {{ song.song_title }}
+
+       {% if song.is_favourite %}
+           <img src="{% static "image/Star.fw.png" %}" alt="My image"/>
+       {% endif %}
+       </label><br>
+    {% endfor %}
+
+    <button class="btn btn-dark my-2 my-sm-0" type="submit" value="Favourite" id="button" style="margin-left: 10%">Favourite</button>
+</form>----->
+<br>
+    <form class="form-inline my-2 my-lg-0 navbar-nav mr-auto" method="get" role="search"
+          action="{% url 'musicStore:index' %}" style="margin-left: 80%; margin-top: 5%" >
+
+             <button class="btn btn-dark my-2 my-sm-0" type="submit">Back</button>
+    </form>
+    <br>
+
+{% endblock %}
+</div>

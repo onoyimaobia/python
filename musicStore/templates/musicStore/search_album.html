@@ -1,0 +1,45 @@
+{% extends 'musicStore/base.html' %}
+
+{% block title %}Search Result{% endblock %}
+{% block body %}
+{% load static %}
+    <div class="container">
+<div class="row" style="margin-top: 2%">
+{% if search1 %}
+
+    <table class="table table-dark table-hover" id="first-table">
+                <thead>
+                <tr>
+                    <th>Artist</th>
+                    <th>Genre</th>
+                    <th>Creation Date</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for search in search1  %}
+                    <tr>
+                    <td>{{ search.artist }}</td>
+                    <td>{{ search.genere }}</td>
+                    <td>{{ search.creation_date }}</td>
+                {% endfor %}
+
+
+
+
+                    </tr>
+
+                </tbody>
+                </table>
+
+    {% else %}
+    <P>no data found</P>
+{% endif %}
+<form class="form-inline my-2 my-lg-0 navbar-nav mr-auto" method="get" role="search"
+          action="{% url 'musicStore:index' %}" style="margin-left: 80%" >
+
+             <button class="btn btn-dark my-2 my-sm-0" type="submit">Back</button>
+    </form>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> {% block title %}Music{% endblock %}</title>
+  {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}"/>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap-grid.css' %}"/>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+          integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <style type="text/css">
+        body{
+            #background-color: #ff8271;
+        }
+
+        #first ul{
+            list-style-type: circle;
+        }
+        .container{
+            background-color: rgba(128, 128, 128, 0.22);
+        }power
+        #first_row{margin-top: 2%;}
+        .search-card{
+             box-shadow: 10px 10px 10px;
+            background-color: #1b1e21;
+
+        }
+        .navbar{
+            box-shadow: 10px 10px 10px;
+        }
+        .navbar-brand{
+            font-family: 'Satisfy', cursive;
+        }
+         .navbar-nav .nav-item.active .nav-link,
+        .navbar-nav .nav-item:hover .nav-link {
+            color: #004C66;
+            }
+    #first-table{
+        box-shadow: 10px 10px 10px;
+        height: 350px;
+
+        display: inline-block;
+        overflow: auto;
+    }
+    #first-table1{
+        box-shadow: 10px 10px 10px;
+        height: 350px;
+
+        display: inline-block;
+        overflow: auto;
+    }
+    #groupt-table1{
+        box-shadow: 10px 10px 10px;
+        display: inline-block;
+    }
+
+    .search1{margin-top: 1%}
+        .image{
+            height: 200px;
+            width: 50%;
+            overflow: hidden;
+        }
+        	 .blink{
+
+		animation: blink 1s infinite;
+	 }
+
+	 @keyframes blink{
+		0%{opacity: 1;}
+		75%{opacity: 1;}
+		76%{ opacity: 0;}
+		100%{opacity: 0;}
+	 }
+     #video{
+         margin-top: -10%;
+     }
+    #audio{
+        margin-top: -10%;
+    }
+.too{
+    border: none;
+    background-color: inherit;
+     display: inline-block;
+    color: #eee;
+}
+    </style>
+</head>
+
+    <body>
+
+    <div class="container">
+    <!---navbar Haeder----->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark uka">
+
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'musicStore:index' %}">Music</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navTop"
+                    aria-controls="navTop"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navTop">
+            <ul class="navbar-nav mr-auto">
+
+
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'musicStore:song' %}">
+                    <span class="fas fa-music"></span>&nbsp;
+                    Songs &nbsp;
+                </a>
+              </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'musicStore:overview' %}">
+                       <span class="fas fa-dot-circle" aria-hidden="true"></span>&nbsp;
+                        Overview
+                    </a>
+
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0 navbar-nav mr-auto" method="get" role="search" action="{% url 'musicStore:search' %}">
+             <input class="form-control mr-sm-2" type="search" placeholder="Search for Artist" aria-label="Search" name="q" value="{{ request.GET.q }}" >
+             <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+            </form>
+             <ul class="navbar-nav ml-auto">
+             {% if request.user.is_authenticated %}
+                 {% if request.user.is_staff %}
+             <li >
+                        <a class="nav-link" href="{% url 'musicStore:delete_album' %}">
+                            <span class="sr-only">(current)</span>
+                            <span class="fas fa-trash-alt" aria-hidden="true"></span>&nbsp;
+                            Delete Album
+                        </a>
+                  </li>
+                     {% endif %}
+             {% endif %}
+             {% if request.user.is_authenticated %}
+                 {% if request.user.is_staff %}
+              <li >
+                        <a class="nav-link" href="{% url 'musicStore:permission' %}">
+                            <span class="sr-only">(current)</span>
+                            <span class="fas fa-universal-access" aria-hidden="true"></span>&nbsp;
+                            Privilege
+                        </a>
+                  </li>
+               {% endif %}
+             {% endif %}
+             {% if request.user.is_authenticated %}
+                 {% if request.user.is_staff %}
+                  <li >
+                        <a class="nav-link" href="{% url 'musicStore:add-album' %}">
+                            <span class="sr-only">(current)</span>
+                            <span class="fas fa-plus" aria-hidden="true"></span>&nbsp;
+                            Album&nbsp;
+                        </a>
+                  </li>
+             {% endif %}
+             {% endif %}
+                 <!--<li class="nav-item">
+                        <a class="nav-link" href="{% url 'musicStore:displaydetail' %}">
+
+                            API &nbsp;
+                        </a>
+                  </li>--->
+             {% if not request.user.is_authenticated %}
+                 <li class="nav-item">
+                        <a class="nav-link" href="{% url 'musicStore:register' %}">
+                            <span  class="fas fa-user-plus"></span>&nbsp;
+                            Register &nbsp;
+                        </a>
+                  </li>
+             {% endif %}
+             {% if not request.user.is_authenticated %}
+                  <li class="nav-item">
+
+                        <a class="nav-link" href="{% url 'musicStore:login' %}">
+                            <span class="far fa-user"></span>&nbsp;
+                            Login &nbsp;
+                        </a>
+                  </li>
+             {% endif %}
+                 {% if request.user.is_authenticated %}
+                 <li class="nav-item" style="margin-top: 2%">
+                     <form  class="logout_link" action="{% url 'musicStore:logout'%}" method="post">
+                          {% csrf_token %}
+                          <button type="submit" class="btn-light too"><span class="fas fa-power-off"></span>&nbsp;
+                            Logout &nbsp;</button>
+                      </form>
+                        <!--<a class="nav-link" href="#">
+                            <span class="fas fa-power-off"></span>&nbsp;
+                            Logout &nbsp;
+                        </a>-->
+                  </li>
+                 {% endif %}
+            </ul>
+        </div>
+    </nav>
+     {% block body %}
+        {% endblock %}
+    <br>
+        <div class="card" style="background-color:white">
+        <div class="card-header" style="background-color: rgba(255,255,255,0.08)">
+            <!---<div class="row">
+                <div class="col-lg-2 ">
+                    <div class="col-lg-12">
+                    <br><strong >FOLLOW US ON</strong>
+                </div>
+                    </div>
+                <div class="col-lg-2">
+                    <a href="">
+                        <img src="{% static "image/face+.fw.png" %}" class="mx-auto d-block img-fluid"/>
+                    </a>
+                </div>
+                <div class="col-lg-1 ">
+                   <a href="">
+                        <img src="{% static "image/whatapp.fw.png" %}" class="mx-auto d-block img-fluid"/>
+                    </a>
+                </div>
+                <div class="col-lg-2 ">
+                   <a href="">
+                        <img src="{% static "image/goo+.fw.png" %}" class="mx-auto d-block img-fluid"/>
+                    </a>
+                </div>
+                <div class="col-lg-2">
+                   <a href="">
+                        <img src="{% static "image/linkedln.fw.png" %}" class="mx-auto d-block img-fluid"/>
+                    </a>
+                </div>
+                <div class="col-lg-1 ">
+                   <a href="">
+                        <img src="{% static "image/twitter.fw.png" %}" class="mx-auto d-block img-fluid"/>
+                    </a>
+                </div>
+                <div class="col-lg-1 ">
+                   <a href="">
+                        <img src="{% static "image/instagram.fw.png" %}" class="mx-auto d-block img-fluid"/>
+                    </a>
+                </div>
+                <div class="col-lg-1 ">
+                   <a href="">
+                        <img src="{% static "image/imo.fw.png" %}" class="mx-auto d-block img-fluid"/>
+                    </a>
+                </div>
+            </div>--->
+        </div>
+            <hr>
+            <div class="card-body">
+                <div class="col-lg-12">
+                    <div class="copyright">
+        Copyright ©2018 Toochi All rights reserved.
+        <!--| <a href="" rel="nofollow">DMCA Disclaimer</a>
+        | <a href="">Privacy Policy</a>
+        | <a href="" rel="nofollow">Term of Use</a>
+        | <a target="_blank" href="https://translate.apkpure.com/projects/apkpure/apkpurecom/" rel="nofollow">Help translate Toochi</a>-->
+    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </body>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+{% block js %}
+
+{% endblock %}
+
+</html>

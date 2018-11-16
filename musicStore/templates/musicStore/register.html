@@ -1,0 +1,91 @@
+{% extends 'musicStore/base.html' %}
+
+{% block title %}Songs{% endblock %}
+{% block body %}
+{% load static %}
+<div class="container"style="margin-top: 2%;" >
+    <div class="form-group">
+    <div class="col-lg-10 offset-lg-1 ">
+        <div class="row">
+        <div class="col-9">
+        <form class="form-group" method="post" action="{% url 'musicStore:registers' %}">
+             {% csrf_token %}
+        <div class="col-sm-6">
+        <label ><strong>First Name</strong></label>
+        <input class="form-control" type="text" onkeyup="keyUp(event.keyCode)" onkeydown="return isAlpha(event.keyCode);"
+               aria-label="Search" name="first_name" value="{{ first_name }}">
+        </div>
+        <div class="col-lg-6">
+        <label><strong>Last Name</strong> </label>
+        <input class="form-control mr-sm-2" type="text" onkeyup="keyUp(event.keyCode)" onkeydown="return isAlpha(event.keyCode);"
+               aria-label="Search" name="last_name" value="{{ last_name }}">
+        </div>
+        <div class="col-lg-6">
+        <label><strong> Email</strong></label>
+        <input class="form-control mr-sm-2" type="text"  aria-label="Search" name="email" value="{{ email }}">
+        </div>
+            <div class="col-lg-6">
+        <label><strong> Contact</strong></label>
+        <input class="form-control mr-sm-2" type="text" onkeyup="keyUp(event.keyCode)"  onkeydown="return isNumeric(event.keyCode);"
+               aria-label="Search" name="contact" value="{{ contact }}">
+        </div>
+            <div class="col-lg-6">
+        <label><strong> Address</strong></label>
+        <input class="form-control mr-sm-2" type="text"  aria-label="Search" name="address" value="{{ address }}">
+        </div>
+        <div class="col-lg-6">
+        <label><strong>Username</strong></label>
+        <input class="form-control mr-sm-2" type="text"   aria-label="Username" name="username" value="{{username}}">
+        </div>
+        <div class="col-lg-6">
+        <label><strong>Paaword</strong></label>
+        <input class="form-control mr-sm-2" type="password"   aria-label="Password" name="password" value="{{password }}">
+        </div>
+        <div class="col-lg-6">
+        <label><strong>Confirm Password</strong></label>
+        <input class="form-control mr-sm-2" type="password"   aria-label="Confirm Password" name="confirm_password" value="{{ confirm_password}}">
+        </div><br>
+        <div class="col-lg-6">
+           <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" style="background-color: white">Sign Up</button>
+        </div>
+
+        </form>
+            </div>
+            <div class="col-lg-3" style="margin-top: 2%">
+            {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible" role="alert" style="background-color: whitesmoke; box-shadow: 10px 10px 10px;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    <p style="color:red">{{ message }}</p>
+  </div>
+{% endfor %}
+
+
+            </div>
+
+        </div>
+    </div>
+    </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        function isNumeric(keyCode)
+        {
+            if (keyCode === 16)
+                isShift = true;
+            return ((keyCode >= 48 && keyCode <= 57 || keyCode === 8 || (keyCode >= 96 && keyCode <= 105)) && isShift === false);
+
+        }
+
+    </script>
+    <script type="text/javascript">
+        function isAlpha(keyCode)
+        {
+            return ((keyCode >= 65 && keyCode <= 90) || keyCode === 8 || keyCode === 32 ||keyCode === 190);
+        }
+    </script>
+{% endblock %}

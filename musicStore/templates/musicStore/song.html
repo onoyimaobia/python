@@ -1,0 +1,61 @@
+{% extends 'musicStore/base.html' %}
+{% block title %}Songs{% endblock %}
+{% block body %}
+{% load static %}
+
+ <div class="row" style="margin-top: 2%">
+ {%  for songs in  all_song %}
+                <div class="col-md-3" style="margin-top: 2%">
+                    <div class="card">
+                        <a href="{% url 'musicStore:detail' songs.id %}">
+                            <img src="{{songs.song_logo }}" class="card-img-top img-fluid" style="height: 350px; width: 500px;">
+                        </a>
+                        <div class="card-body">
+                            <h3 style="color: darkgray">Song info</h3>
+                            <h5 style="color: darkgray">Artist: <strong style="color: #0a0a0a">{{songs.album.artist }}</strong></h5>
+                            <h5 style="color: darkgray"> Featured artist: <strong style="color: #0a0a0a">{{songs.featured_artist }}</strong></h5>
+                            <h5 style="color: darkgray"> Featured artist: <strong style="color: #0a0a0a">{{songs.song_title}}</strong></h5>
+                            <h5 style="color: darkgray">Song type: <strong style="color: #0a0a0a">{{songs.file_type }}</strong></h5>
+                             <h5 style="color: darkgray">Realesed Date: <strong style="color: #0a0a0a">{{songs.production_date }}</strong></h5>
+                            <!-- View Details -->
+                            <a href="{% url 'musicStore:download' songs.id %}" class="btn btn-dark btn-sm fa fa-download" aria-hidden="true" role="button"> Download</a>
+
+                        </div>
+                    </div>
+                </div>
+                {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+            {% endfor %}
+
+ </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-----<div class="col-lg-6">
+            <h2>List of Available Songs</h2>
+                {% if all_song %}
+                    <ul style="font-family: fantasy;font-size: 20px">
+                    {% for songs in  all_song  %}
+                        <li style="list-style-type: circle"><a href="#" style="color:white">{{ songs.song_title }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+{% endblock %}--->

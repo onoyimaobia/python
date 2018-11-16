@@ -1,0 +1,51 @@
+{% extends 'musicStore/base.html' %}
+
+{% block body %}
+    <div class="container" >
+    <div class="col-lg-9" style="margin-left: 20%;margin-top: 2%">
+        <div class="col-lg-6">
+        <label ><strong> Artist</strong></label>
+        <input class="form-control mr-sm-2" type="text" placeholder="Search for Artist" aria-label="Search" name="d" value="{{ d }}">
+        </div>
+        <div class="col-lg-6">
+        <label><strong>Song</strong> </label>
+        <input class="form-control mr-sm-2" type="text" placeholder="Search for Artist" aria-label="Search" name="e" value="{{ e }}">
+        </div>
+        <div class="col-lg-6">
+        <label><strong> Album Title</strong></label>
+        <input class="form-control mr-sm-2" type="text" placeholder="Search for Artist" aria-label="Search" name="f" value="{{ f }}">
+        </div>
+        <div class="col-lg-6">
+        <label><strong> Album Logo</strong></label>
+        <input class="form-control mr-sm-2" type="text" placeholder="" aria-label="Search" name="g" value="{{ g }}">
+        </div>
+        <div class="col-lg-6">
+        <label><strong>Genre </strong></label>
+        <input class="form-control mr-sm-2" type="text" placeholder="" aria-label="Search" name="h" value="{{h }}">
+        </div>
+        <div class="col-lg-6">
+        <label><strong>file type</strong></label>
+        <input class="form-control mr-sm-2" type="text"   aria-label="Search" name="i" value="{{ i }}">
+        </div>
+        <div class="col-lg-6">
+        <label><strong>source</strong></label>
+        <input class="form-control mr-sm-2" type="text"  aria-label="Search" name="j" value="{{ j }}">
+        </div>
+        <div class="col-lg-6">
+            <form class="form-group" method="post" action="{% url 'musicStore:savetodb' %}">
+                            {% csrf_token %}
+                                <input type='hidden' name='artistName' value='{{ d }}' />
+                                <input type="hidden" name="trackName"  value="{{ e}}" />
+                                <input type="hidden" name="collectionName"  value="{{ f }}" />
+                                <input type="hidden" name="artworkUrl100"  value="{{ g}}" />
+                                <input type="hidden" name="primaryGenreName"  value="{{ h}}" />
+                                <input type="hidden" name="h"  value="{{ i}}" />
+                                <input type="hidden" name="i"  value="{{ j}}" />
+                                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Add Album</button>
+            </form>
+            <a href="{% url 'musicStore:savetodb' %}">Add Album</a>&nbsp;&nbsp;
+        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" onclick="{% url 'musicStore:savetodb' %}">Add to data</button>
+        </div>
+    </div>
+    </div>
+{% endblock %}

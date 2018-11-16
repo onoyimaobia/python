@@ -1,0 +1,49 @@
+{% extends 'musicStore/base.html' %}
+
+{% block body %}
+<div class="row">
+    <h3>{{result }}</h3>
+</div>
+     <div class="row" style="margin-top: 2%">
+         {% for name in wrapperName %}
+                <div class="col-md-3" style="margin-top: 2%">
+                    <div class="card">
+                        <a href="#">
+                            <img src="{{ name.artworkUrl100 }}" class="card-img-top img-fluid" style="height: 300px; width: 500px;">
+                        </a>
+                        <div class="card-body">
+                            <h5>Artist Name: <strong>{{ name.artistName }}</strong></h5>
+                            <h6>Song Name: <strong>{{ name.trackName }}</strong></h6>
+                            <h6>Album Title: <strong>{{ name.collectionName }}</strong></h6>
+                             <h6>Genre: <strong>{{ name.primaryGenreName }}</strong></h6>
+                            <!-- View Details -->
+                            <h5>Source: <a href="https://itunes.apple.com/search?term=jack+johnson" class="btn btn-primary btn-sm" role="button">iTunes</a></h5>
+                            <form class="form-group" method="post" action="{% url 'musicStore:Addalbum' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                                <input type='hidden' name='artistName' value='{{ name.artistName }}' />
+                                <input type="hidden" name="trackName"  value="{{ name.trackName }}" />
+                                <input type="hidden" name="collectionName"  value="{{ name.collectionName }}" />
+                                <input type="hidden" name="artworkUrl100"  value="{{ name.artworkUrl100 }}" />
+                                <input type="hidden" name="primaryGenreName"  value="{{ name.primaryGenreName}}" />
+                                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Add Album</button>
+                            </form>
+
+                            <a href="{% url 'musicStore:Addalbum' %}">Add Album</a>&nbsp;&nbsp;
+                            <a href="#">Add Song</a>
+
+
+
+
+                            <!-- Favorite Album -->
+
+                        </div>
+                    </div>
+                </div>
+                {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+            {% endfor %}
+
+
+
+
+     </div>
+{% endblock %}

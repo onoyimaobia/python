@@ -1,0 +1,10 @@
+body{
+    background-image: url("/static/image/agu.fw.png");
+    background-repeat: no-repeat;
+    color: white;
+    position: absolute;
+}
+#button{
+    background-color: #188077;
+    color: white;
+}

@@ -1,0 +1,70 @@
+{% extends 'musicStore/base.html' %}
+
+{% block title %}Songs{% endblock %}
+{% block body %}
+{% load static %}
+<div class="container" style="margin-top: 2%">
+<div class="row">
+<div class="col-lg-6 offset-2">
+
+    <div class="card">
+        <div class="card-img-top" style="margin-top: 2%">
+            <img src="{% static "image/user.fw.png" %}" class="mx-auto d-block img-fluid" alt="My image"/>
+        </div>
+        <div class="card-body align-items-lg-center" style="margin-top: -2%;">
+    <div class="form-group">
+
+        <div class="col-lg-9">
+        <form class="form-group" method="post" action="{% url 'musicStore:loginn' %}">
+             {% csrf_token %}
+        <div class="col-sm-12">
+        <label class="fas fa-user-plus"><strong>  Username</strong></label>
+        <input class="form-control" type="text" onkeyup="keyUp(event.keyCode)" onkeydown="return isAlpha(event.keyCode);"
+               aria-label="Search" name="username" value="{{ username }}">
+        </div>
+            <div class="col-sm-12">
+        <label class="fas fa-unlock-alt" ><strong>  Password</strong></label>
+        <input class="form-control" type="password" aria-label="Search" name="password" value="{{ password }}">
+        </div><br>
+             <div class="col-lg-6">
+           <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" style="background-color: white">Login</button>
+        </div>
+
+        </form>
+    </div>
+        </div>
+</div>
+
+    </div>
+</div>
+<div class="col-4">
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible" role="alert" style="background-color: whitesmoke; box-shadow: 10px 10px 10px;color:darkgray">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    <p style="color:red">{{ message }}</p>
+            {% endfor %}
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        function isNumeric(keyCode)
+        {
+            if (keyCode === 16)
+                isShift = true;
+            return ((keyCode >= 48 && keyCode <= 57 || keyCode === 8 || (keyCode >= 96 && keyCode <= 105)) && isShift === false);
+
+        }
+
+    </script>
+    <script type="text/javascript">
+        function isAlpha(keyCode)
+        {
+            return ((keyCode >= 65 && keyCode <= 90) || keyCode === 8 || keyCode === 32 ||keyCode === 190);
+        }
+    </script>
+{% endblock %}
